@@ -191,8 +191,92 @@
         }
       ],
       "count": 4
+    },
+    "封面": {
+      "name": "封面",
+      "images": [
+        {
+          "name": "2013",
+          "original": "https://img.1701701.xyz/api/封面/2013.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/2013.webp",
+          "category": "封面"
+        },
+        {
+          "name": "2014",
+          "original": "https://img.1701701.xyz/api/封面/2014.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/2014.webp",
+          "category": "封面"
+        },
+        {
+          "name": "2015",
+          "original": "https://img.1701701.xyz/api/封面/2015.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/2015.webp",
+          "category": "封面"
+        },
+        {
+          "name": "2016",
+          "original": "https://img.1701701.xyz/api/封面/2016.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/2016.webp",
+          "category": "封面"
+        },
+        {
+          "name": "Cover",
+          "original": "https://img.1701701.xyz/api/封面/Cover.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/Cover.webp",
+          "category": "封面"
+        },
+        {
+          "name": "Cover (3) 5",
+          "original": "https://img.1701701.xyz/api/封面/Cover (3) 5.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/Cover (3) 5.webp",
+          "category": "封面"
+        },
+        {
+          "name": "Cover (3) 6",
+          "original": "https://img.1701701.xyz/api/封面/Cover (3) 6.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/Cover (3) 6.webp",
+          "category": "封面"
+        },
+        {
+          "name": "dian1",
+          "original": "https://img.1701701.xyz/api/封面/dian1.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/dian1.webp",
+          "category": "封面"
+        },
+        {
+          "name": "dj",
+          "original": "https://img.1701701.xyz/api/封面/dj.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/dj.webp",
+          "category": "封面"
+        },
+        {
+          "name": "f",
+          "original": "https://img.1701701.xyz/api/封面/f.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/f.webp",
+          "category": "封面"
+        },
+        {
+          "name": "fg",
+          "original": "https://img.1701701.xyz/api/封面/fg.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/fg.webp",
+          "category": "封面"
+        },
+        {
+          "name": "jjyx",
+          "original": "https://img.1701701.xyz/api/封面/jjyx.jpeg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/jjyx.webp",
+          "category": "封面"
+        },
+        {
+          "name": "ytdj",
+          "original": "https://img.1701701.xyz/api/封面/ytdj.jpg",
+          "preview": "https://img.1701701.xyz/api/0_preview/封面/ytdj.webp",
+          "category": "封面"
+        }
+      ],
+      "count": 13
     }
   },
-  "total_images": 29,
-  "generated_at": "2025-09-16T14:36:55.950Z"
+  "total_images": 42,
+  "generated_at": "2025-09-16T18:32:28.181Z"
 }

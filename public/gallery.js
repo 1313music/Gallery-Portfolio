@@ -2,7 +2,6 @@
 class Gallery {
     constructor() {
         this.dataLoader = new DataLoader();
-        this.autoScroll = new AutoScroll();
         this.tagFilter = null;
         this.imageLoader = null;
         this.isPageLoading = true;
@@ -29,9 +28,6 @@ class Gallery {
         // 初始化组件（包括 tagFilter）
         this.initComponents();
 
-        // 设置自动滚动按钮显示逻辑
-        this.autoScroll.setupScrollButtonVisibility();
-
         // 处理 URL 参数（此时 tagFilter 已准备好）
         this.handleUrlParams();
 
@@ -54,6 +50,9 @@ class Gallery {
         // 创建标签筛选器
         const categories = this.dataLoader.getCategories();
         this.tagFilter.createTagFilter(categories);
+        
+        // 将TagFilter的currentTag同步到ImageLoader
+        this.imageLoader.currentTag = this.tagFilter.getCurrentTag();
 
         // 设置模态窗口事件
         this.imageLoader.setupModalEvents();
@@ -84,17 +83,14 @@ class Gallery {
                 this.imageLoader.filterImages(tagFromUrl);
             } else {
                 console.log('标签不存在:', tagFromUrl);
-                if (this.tagFilter.getCurrentTag() !== 'all') {
-                    this.tagFilter.selectTagByValue('all');
-                    this.imageLoader.filterImages('all');
-                }
-            }
-        } else {
-            console.log('URL中没有标签参数，选择All标签');
-            if (this.tagFilter.getCurrentTag() !== 'all') {
+                // 默认选择all标签
                 this.tagFilter.selectTagByValue('all');
                 this.imageLoader.filterImages('all');
             }
+        } else {
+            console.log('URL中没有标签参数，选择all标签');
+            this.tagFilter.selectTagByValue('all');
+            this.imageLoader.filterImages('all');
         }
     }
 
@@ -117,8 +113,9 @@ class Gallery {
     }
 
     loadInitialImages() {
-        if (this.tagFilter.getCurrentTag() === 'all') {
-            this.imageLoader.filterImages('all');
+        // 如果currentTag已经设置（由TagFilter设置），则加载对应的图片
+        if (this.imageLoader.currentTag) {
+            this.imageLoader.filterImages(this.imageLoader.currentTag);
         }
         this.imageLoader.updateColumns();
 

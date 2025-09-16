@@ -1,104 +1,129 @@
-/* Layout styles */
-body {
-  font-family: "Roboto", Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+* {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-color);
-  transition: background-color 0.3s, color 0.3s;
-  min-height: 100vh; /* Ensures footer is at the bottom */
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* iOS Safari */
-  -webkit-touch-callout: none; /* Disable callout, image save panel (iOS Safari) */
-  user-select: none; /* Disable text selection */
-  -ms-touch-action: manipulation; /* IE 10 */
-  touch-action: manipulation; /* Non-prefixed version, currently supported by Chrome, Edge, and Firefox */
-  color: var(--text-color);
+  box-sizing: border-box;
 }
 
-header {
-  width: 100%;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Layout styles */
+body {
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #0f1117 0%, #1a1d28 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 15px 10px;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  z-index: 1000;
-  transition: transform 0.3s ease-in-out, height 0.3s ease-in-out,
-    padding 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
+  background: 
+      radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: -2;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 2em;
-  transition: font-size 0.3s ease-in-out;
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-.header-buttons {
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  position: relative;
+}
+
+.logo {
   display: flex;
   align-items: center;
-  align-items: baseline;
-  transition: font-size 0.3s ease-in-out;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  color: var(--primary);
 }
 
-header a {
-  color: white;
-  font-size: 1.5em;
-  margin-right: 20px;
-  text-decoration: none;
-  transition: font-size 0.3s ease-in-out;
+.logo i {
+  color: var(--primary);
+  font-size: 28px;
+  transition: transform 0.5s ease;
 }
 
-header button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: font-size 0.3s ease-in-out;
+.logo:hover i {
+  transform: rotate(15deg);
+}
+
+/* 导航菜单样式 */
+.nav-menu {
   display: flex;
+  gap: 15px;
+  margin-left: auto;
+  align-items: center;
 }
 
-header button img {
-  width: 26px;
-  height: 26px;
-  transition: font-size 0.3s ease-in-out;
-  margin-right: 0.1em;
+.nav-item {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  text-decoration: none;
 }
 
-header a img {
-  width: 26px;
-  height: 26px;
-  transition: font-size 0.3s ease-in-out;
-  margin-right: 0.1em;
+.nav-item:hover {
+  transform: scale(1.1);
+}
+
+.nav-item i {
+  font-size: 22px;
+  color: #d4af37;
+  transition: all 0.3s ease;
+}
+
+.nav-item:hover i {
+  color: var(--accent);
+  transform: scale(1.1);
 }
 
 footer {
-  width: 100%;
-  background-color: var(--primary-color);
-  color: white;
   text-align: center;
-  padding: 10px 0;
-  margin-top: auto; /* Pushes footer to the bottom */
-  opacity: 0; /* Start hidden */
-  transition: opacity 1s; /* Fade-in effect */
+  padding: 30px 0 15px;
+  color: var(--text-secondary);
+  font-size: 14px;    
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 footer a {
-  color: white;
+  color: var(--primary);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: var(--accent);
 }
 
 .load-more {
   padding: 10px 20px;
   margin: 20px 0;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--primary);
+  color: var(--text-primary);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -107,6 +132,10 @@ footer a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.load-more:hover {
+  background-color: var(--primary-dark);
 }
 
 .load-more.loading {
@@ -137,49 +166,12 @@ footer a {
   }
 }
 
-/* Dark theme styles */
-body.dark {
-  background-color: #2d2d2d;
-  color: #e0e0e0;
-  --primary-color: #3d3d3d;
-  --text-color: #e0e0e0;
-  --bg-color: #121212;
-  --shadow-color: rgba(0, 0, 0, 0.6);
-}
-
-body.dark header,
-body.dark footer {
-  background-color: #3d3d3d;
-  border-bottom: 1px solid #4d4d4d;
-}
-
-body.dark .tag-filter {
-  background-color: #3d3d3d;
-}
-
-body.dark .tag {
-  background-color: #4d4d4d;
-  color: #e0e0e0;
-}
-
-body.dark .modal {
-  background-color: rgba(61, 61, 61, 0.9);
-}
-
-body.dark .modal-content {
-  background-color: #4d4d4d;
-}
-
-body.dark #exif-info {
-  color: #e0e0e0;
-}
-
 /* 加载原图按钮样式 */
 .load-original-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: var(--primary-color);
+  background-color: var(--primary);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -198,7 +190,7 @@ body.dark #exif-info {
 }
 
 .load-original-btn:hover {
-  background-color: var(--primary-color-dark);
+  background-color: var(--primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -231,18 +223,6 @@ body.dark #exif-info {
   white-space: nowrap;
 }
 
-/* 深色主题下的按钮样式 */
-body.dark .load-original-btn {
-  background-color: var(--primary-color);
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
-body.dark .load-original-btn:hover {
-  background-color: var(--primary-color-dark);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
-
 /* Loading animation */
 #loading {
   position: fixed;
@@ -257,7 +237,7 @@ body.dark .load-original-btn:hover {
 
 #loading::after {
   content: "";
-  border: 4px solid var(--primary-color);
+  border: 4px solid var(--primary);
   border-top: 4px solid transparent;
   border-radius: 50%;
   width: 40px;
@@ -270,84 +250,96 @@ body.dark .load-original-btn:hover {
   display: none;
 }
 
-@media (max-width: 600px) {
-  header {
-    height: 2.07em;
-    padding: 10px 15px;
+/* 移动端导航栏样式优化 */
+@media (max-width: 768px) {
+  /* 减小logo尺寸 */
+  .logo {
+    font-size: 20px;
+    gap: 8px;
   }
-  header h1 {
-    font-size: 1.5em;
-  }
-  header a {
+  
+  .logo i {
     font-size: 24px;
   }
-  header button {
-    margin-right: 30px;
+  
+  /* 减小导航栏间距 */
+  .nav-menu {
+    gap: 10px;
   }
 }
 
-@media (min-width: 600px) and (max-width: 1200px) {
-  header {
-    height: 2.085em;
-    padding: 15px 20px;
-  }
-  header h1 {
-    font-size: 1.75em;
-  }
-  header a {
-    font-size: 24px;
-  }
-  header button {
-    margin-right: 40px;
-  }
+/* 回到顶部按钮 */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--primary);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: var(--shadow);
 }
 
-@media (min-width: 1200px) {
-  header {
-    height: 2.1em;
-    padding: 20px 30px;
-  }
-  header h1 {
-    font-size: 2em;
-  }
-  header a {
-    font-size: 24px;
-  }
-  header button {
-    margin-right: 50px;
-  }
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: var(--bg-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+.back-to-top i {
+    font-size: 1.2rem;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .back-to-top i {
+        font-size: 1rem;
+    }
 }
 
 /* 浅色模式 */
 :root {
-  --primary-color: #d4af37; /* 统一绿色主题色 */
-  --background-color: #ffffff;
-  --text-color: #333333;
-  --header-bg: #f5f5f5;
-  --button-bg: #d4af37; /* 统一绿色 */
-  --button-text: #ffffff;
-  --tag-bg: #d4af37; /* 统一绿色 */
-  --tag-text: #ffffff;
-  --modal-bg: rgba(255, 255, 255, 0.9);
-  --modal-text: #333333;
-}
-
-/* 深色模式 */
-.dark {
-  --primary-color: #d4af37; /* 保持绿色主题 */
-  --background-color: #121212;
-  --text-color: #e0e0e0;
-  --header-bg: #1e1e1e;
-  --button-bg: #d4af37; /* 保持绿色 */
-  --button-text: #ffffff;
-  --tag-bg: #d4af37; /* 保持绿色 */
-  --tag-text: #ffffff;
-  --modal-bg: rgba(18, 18, 18, 0.9);
-  --modal-text: #e0e0e0;
+  --bg-dark: #0f1117;
+  --bg-card: rgba(25, 28, 36, 0.95);
+  --bg-hover: rgba(45, 50, 65, 0.85);
+  --primary: #d4af37;
+  --primary-dark: #b08d26;
+  --accent: #ffd700;
+  --text-primary: #f0f0f8;
+  --text-secondary: #a0a8c0;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --transition: all 0.3s ease;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 /* 使用变量替换原有颜色值 */
-header, footer, .load-more {
+.load-more {
     background-color: var(--primary-color);
 }
 
@@ -371,12 +363,6 @@ body {
     z-index: 1;
 }
 
-/* 优化暗黑模式下垂直标签栏的背景 */
-body.dark .tag-filter-vertical {
-    background-color: rgba(255, 255, 255, 0.1); /* 使用半透明白色背景，降低突兀感 */
-    /* 可根据需要调整内边距、圆角等其他样式 */
-}
-
 /* 加载指示器样式 */
 #temp-loading-msg {
     text-align: center;
@@ -391,12 +377,6 @@ body.dark .tag-filter-vertical {
 @keyframes fadeInOut {
     from { opacity: 0.6; }
     to { opacity: 1; }
-}
-
-/* 适配深色模式 */
-body.dark #temp-loading-msg {
-    color: #aaa;
-    background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* 通知系统样式 */
@@ -451,11 +431,4 @@ body.dark #temp-loading-msg {
   border-top-color: #fff;
   animation: spin 1s linear infinite;
   margin-right: 10px;
-}
-
-/* 深色模式下的通知样式 */
-body.dark .notification {
-  background-color: #1e1e1e; /* 改为不透明背景 */
-  color: #f0f0f0;
-  border: 1px solid rgba(80, 80, 80, 0.5); /* 添加边框 */
 }

@@ -9,7 +9,7 @@ class ImageLoader {
         this.imagesLoadedCount = 0;
         this.loadingImagesCount = 0;
         this.columnElements = [];
-        this.currentTag = 'all';
+        this.currentTag = ''; // 初始为空，等待TagFilter设置
         this.isScrollLoading = false;
         this.scrollThrottleTimer = null;
         this.lastScrollY = window.scrollY;
@@ -168,7 +168,10 @@ class ImageLoader {
             
             // 将图片添加到最短的列
             const shortestColumnIndex = this.getShortestColumn();
-            this.columnElements[shortestColumnIndex].appendChild(img);
+            // 创建一个div容器来包裹图片，用于实现闪亮效果
+            const imgContainer = document.createElement('div');
+            imgContainer.appendChild(img);
+            this.columnElements[shortestColumnIndex].appendChild(imgContainer);
         }
     }
 
@@ -341,7 +344,10 @@ class ImageLoader {
                     
                     // 添加到最短列
                     const shortestColumnIndex = this.getShortestColumn();
-                    this.columnElements[shortestColumnIndex].appendChild(img);
+                    // 创建一个div容器来包裹图片，用于实现闪亮效果
+                    const imgContainer = document.createElement('div');
+                    imgContainer.appendChild(img);
+                    this.columnElements[shortestColumnIndex].appendChild(imgContainer);
                     
                     // 设置加载动画
                     setTimeout(() => {
@@ -417,7 +423,10 @@ class ImageLoader {
             tempLoadingMsg.style.textAlign = 'center';
             tempLoadingMsg.style.margin = '20px 0';
             tempLoadingMsg.style.padding = '10px';
-            tempLoadingMsg.style.color = '#777';
+            tempLoadingMsg.style.color = 'var(--text-secondary)';
+            tempLoadingMsg.style.backgroundColor = 'var(--bg-card)';
+            tempLoadingMsg.style.borderRadius = '5px';
+            tempLoadingMsg.style.border = '1px solid rgba(212, 175, 55, 0.2)';
             document.querySelector('footer').before(tempLoadingMsg);
         }
     }
@@ -497,9 +506,10 @@ class ImageLoader {
             loadedMsg.style.textAlign = 'center';
             loadedMsg.style.margin = '20px 0';
             loadedMsg.style.padding = '10px';
-            loadedMsg.style.color = 'var(--text-color)';
-            loadedMsg.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
-            loadedMsg.style.borderRadius = '5px';
+            loadedMsg.style.color = 'var(--text-secondary)';
+            loadedMsg.style.backgroundColor = 'transparent';
+            loadedMsg.style.borderRadius = '0';
+            loadedMsg.style.border = 'none';
             loadedMsg.style.animation = 'fadeIn 1s';
             document.querySelector('footer').before(loadedMsg);
             
@@ -592,7 +602,7 @@ class ImageLoader {
     // 设置gallery的margin-top
     setGalleryMarginTop() {
         const headerHeight = document.querySelector('header').offsetHeight;
-        this.galleryElement.style.marginTop = `${headerHeight + 20}px`;
+        this.galleryElement.style.marginTop = `${headerHeight - 40}px`;
     }
 
     // 更新悬停效果
@@ -707,7 +717,7 @@ class ImageLoader {
             return `
                 <div class="loading-spinner">
                     <div class="spinner"></div>
-                    <p>加载原图中...</p>
+                    <p style="color:var(--text-secondary);">加载原图中...</p>
                 </div>
             `;
         };
@@ -889,7 +899,7 @@ class ImageLoader {
                 exifInfo.innerHTML = `
                     <div class="loading-paused">
                         <div class="spinner-paused"></div>
-                        <p>加载中...</p>
+                        <p style="color:var(--text-secondary);">加载中...</p>
                     </div>
                 `;
                 spinnerActive = false;
@@ -930,7 +940,7 @@ class ImageLoader {
             console.error('加载高清图失败:', this.currentOriginalUrl);
             if (this.isModalOpen) {
                 modalImg.style.filter = 'none';
-                exifInfo.innerHTML = '<p style="color:red;">原图加载失败</p>';
+                exifInfo.innerHTML = '<p style="color:var(--primary-color);">原图加载失败</p>';
                         // 恢复按钮状态
         loadOriginalBtn.innerHTML = '<span>加载原图</span>';
         loadOriginalBtn.classList.remove('loading');
@@ -1019,4 +1029,4 @@ class ImageLoader {
 }
 
 // 导出为全局变量
-window.ImageLoader = ImageLoader; 
+window.ImageLoader = ImageLoader;

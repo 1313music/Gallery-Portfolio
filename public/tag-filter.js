@@ -2,7 +2,7 @@
 class TagFilter {
     constructor(onTagSelect) {
         this.onTagSelect = onTagSelect;
-        this.currentTag = 'all';
+        this.currentTag = ''; // 初始为空，等待createTagFilter设置
         this.tagContainer = null;
     }
 
@@ -29,24 +29,13 @@ class TagFilter {
             this.tagContainer.scrollTo({ top: scrollTarget, behavior: 'smooth' });
         };
     
-        // 添加"全部"标签
-        const allTag = document.createElement('button');
-        allTag.className = 'tag';
-        allTag.textContent = 'All';
-        allTag.style.backgroundColor = '#4CAF50'; // 绿色主题色
-        allTag.style.color = '#fff';
-        allTag.addEventListener('click', () => {
-            this.selectTag(allTag, 'all');
-            centerTagButton(allTag);
-        });
-        fragment.appendChild(allTag);
-    
         // 过滤掉 'all' 和 '0_preview' 标签，并按字母顺序排序
         const filteredCategories = categories.filter(category => 
             category !== 'all' && category !== '0_preview'
         ).sort();
         
         // 添加其他标签
+        let firstCategoryButton = null;
         filteredCategories.forEach(category => {
             const tagButton = document.createElement('button');
             tagButton.className = 'tag';
@@ -56,7 +45,26 @@ class TagFilter {
                 centerTagButton(tagButton);
             });
             fragment.appendChild(tagButton);
+            
+            // 保存第一个分类按钮的引用
+            if (!firstCategoryButton) {
+                firstCategoryButton = tagButton;
+            }
         });
+    
+        // 添加"全部"标签
+        const allTag = document.createElement('button');
+        allTag.className = 'tag';
+        allTag.textContent = 'All';
+        allTag.addEventListener('click', () => {
+            this.selectTag(allTag, 'all');
+            centerTagButton(allTag);
+        });
+        fragment.appendChild(allTag);
+        
+        // 默认选中All按钮
+        this.selectTag(allTag, 'all');
+        this.currentTag = 'all';
     
         // 一次性添加所有标签
         this.tagContainer.appendChild(fragment);
@@ -87,15 +95,17 @@ class TagFilter {
     selectTag(selectedButton, tag) {
         // 移除所有标签的选中样式
         this.tagContainer.querySelectorAll('.tag').forEach(t => {
-            t.style.backgroundColor = '';
-            t.style.color = '';
+            t.classList.remove('active');
         });
         
         // 设置当前标签的选中样式
-        selectedButton.style.backgroundColor = '#4CAF50';
-        selectedButton.style.color = '#fff';
+        selectedButton.classList.add('active');
         
         this.currentTag = tag;
+        // 同时更新ImageLoader的currentTag
+        if (window.gallery && window.gallery.imageLoader) {
+            window.gallery.imageLoader.currentTag = tag;
+        }
         this.onTagSelect(tag);
     }
 
@@ -135,4 +145,4 @@ class TagFilter {
 }
 
 // 导出为全局变量
-window.TagFilter = TagFilter; 
+window.TagFilter = TagFilter;
