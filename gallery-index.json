@@ -4,12 +4,6 @@
       "name": "1313",
       "images": [
         {
-          "name": "bwu",
-          "original": "https://img.1701701.xyz/api/1313/bwu.jpeg",
-          "preview": "https://img.1701701.xyz/api/0_preview/1313/bwu.webp",
-          "category": "1313"
-        },
-        {
           "name": "IMG_7057",
           "original": "https://img.1701701.xyz/api/1313/IMG_7057.jpeg",
           "preview": "https://img.1701701.xyz/api/0_preview/1313/IMG_7057.webp",
@@ -136,7 +130,7 @@
           "category": "1313"
         }
       ],
-      "count": 22
+      "count": 21
     },
     "b": {
       "name": "b",
@@ -162,35 +156,101 @@
       ],
       "count": 3
     },
-    "fm": {
-      "name": "fm",
+    "壁纸": {
+      "name": "壁纸",
       "images": [
         {
-          "name": "2013",
-          "original": "https://img.1701701.xyz/api/fm/2013.jpg",
-          "preview": "https://img.1701701.xyz/api/0_preview/fm/2013.webp",
-          "category": "fm"
+          "name": "IMG_4887",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4887.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4887.webp",
+          "category": "壁纸"
         },
         {
-          "name": "2014",
-          "original": "https://img.1701701.xyz/api/fm/2014.jpg",
-          "preview": "https://img.1701701.xyz/api/0_preview/fm/2014.webp",
-          "category": "fm"
+          "name": "IMG_4888",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4888.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4888.webp",
+          "category": "壁纸"
         },
         {
-          "name": "2015",
-          "original": "https://img.1701701.xyz/api/fm/2015.jpg",
-          "preview": "https://img.1701701.xyz/api/0_preview/fm/2015.webp",
-          "category": "fm"
+          "name": "IMG_4889",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4889.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4889.webp",
+          "category": "壁纸"
         },
         {
-          "name": "2016",
-          "original": "https://img.1701701.xyz/api/fm/2016.jpg",
-          "preview": "https://img.1701701.xyz/api/0_preview/fm/2016.webp",
-          "category": "fm"
+          "name": "IMG_4890",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4890.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4890.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4892",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4892.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4892.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4894",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4894.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4894.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4895",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4895.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4895.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4898",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4898.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4898.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4899",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4899.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4899.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4902",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4902.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4902.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4903",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4903.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4903.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4905",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4905.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4905.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4908",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4908.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4908.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4909",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4909.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4909.webp",
+          "category": "壁纸"
+        },
+        {
+          "name": "IMG_4927",
+          "original": "https://img.1701701.xyz/api/壁纸/IMG_4927.JPG",
+          "preview": "https://img.1701701.xyz/api/0_preview/壁纸/IMG_4927.webp",
+          "category": "壁纸"
         }
       ],
-      "count": 4
+      "count": 15
     },
     "封面": {
       "name": "封面",
@@ -277,6 +337,6 @@
       "count": 13
     }
   },
-  "total_images": 42,
-  "generated_at": "2025-09-16T18:32:28.181Z"
+  "total_images": 52,
+  "generated_at": "2025-09-16T19:17:36.610Z"
 }
