@@ -320,13 +320,13 @@ body.dark .load-original-btn:hover {
 
 /* 浅色模式 */
 :root {
-  --primary-color: #4CAF50; /* 统一绿色主题色 */
+  --primary-color: #d4af37; /* 统一绿色主题色 */
   --background-color: #ffffff;
   --text-color: #333333;
   --header-bg: #f5f5f5;
-  --button-bg: #4CAF50; /* 统一绿色 */
+  --button-bg: #d4af37; /* 统一绿色 */
   --button-text: #ffffff;
-  --tag-bg: #4CAF50; /* 统一绿色 */
+  --tag-bg: #d4af37; /* 统一绿色 */
   --tag-text: #ffffff;
   --modal-bg: rgba(255, 255, 255, 0.9);
   --modal-text: #333333;
@@ -334,13 +334,13 @@ body.dark .load-original-btn:hover {
 
 /* 深色模式 */
 .dark {
-  --primary-color: #4CAF50; /* 保持绿色主题 */
+  --primary-color: #d4af37; /* 保持绿色主题 */
   --background-color: #121212;
   --text-color: #e0e0e0;
   --header-bg: #1e1e1e;
-  --button-bg: #4CAF50; /* 保持绿色 */
+  --button-bg: #d4af37; /* 保持绿色 */
   --button-text: #ffffff;
-  --tag-bg: #4CAF50; /* 保持绿色 */
+  --tag-bg: #d4af37; /* 保持绿色 */
   --tag-text: #ffffff;
   --modal-bg: rgba(18, 18, 18, 0.9);
   --modal-text: #e0e0e0;
