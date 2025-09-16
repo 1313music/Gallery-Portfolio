@@ -424,9 +424,9 @@ class ImageLoader {
             tempLoadingMsg.style.margin = '20px 0';
             tempLoadingMsg.style.padding = '10px';
             tempLoadingMsg.style.color = 'var(--text-secondary)';
-            tempLoadingMsg.style.backgroundColor = 'var(--bg-card)';
-            tempLoadingMsg.style.borderRadius = '5px';
-            tempLoadingMsg.style.border = '1px solid rgba(212, 175, 55, 0.2)';
+            tempLoadingMsg.style.backgroundColor = 'transparent'; /* 去掉背景色 */
+            tempLoadingMsg.style.borderRadius = '0'; /* 去掉圆角 */
+            tempLoadingMsg.style.border = 'none';
             document.querySelector('footer').before(tempLoadingMsg);
         }
     }

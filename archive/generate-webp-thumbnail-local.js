@@ -72,14 +72,36 @@ async function convertImages() {
     fs.mkdirSync(path.dirname(output), { recursive: true });
 
     try {
+      // 获取原始图片尺寸
+      const metadata = await sharp(input).metadata();
+      
+      // 计算预览图尺寸（限制最大宽度或高度为800像素，保持宽高比）
+      let previewWidth = metadata.width;
+      let previewHeight = metadata.height;
+      const maxDimension = 800;
+      
+      if (previewWidth > maxDimension || previewHeight > maxDimension) {
+        if (previewWidth > previewHeight) {
+          previewHeight = Math.round((previewHeight * maxDimension) / previewWidth);
+          previewWidth = maxDimension;
+        } else {
+          previewWidth = Math.round((previewWidth * maxDimension) / previewHeight);
+          previewHeight = maxDimension;
+        }
+      }
+
+      // 使用适当的压缩质量（70%），确保预览图质量良好且文件大小小于原图
+      const quality = 70;
+
       await sharp(input)
         .rotate() // ✅ 根据 EXIF 正确旋转
         .withMetadata({ orientation: undefined }) // ✅ 保留其他 EXIF，去除 Orientation
-        .webp({ quality: 1 }) // ✅ 转为 WebP，压缩比为1%
+        .resize(previewWidth, previewHeight, { fit: 'inside', withoutEnlargement: true })
+        .webp({ quality: quality }) // ✅ 转为 WebP，使用70%质量
         .toFile(output);
 
       const percent = ((i + 1) / total * 100).toFixed(1);
-      console.log(`✔️ (${i + 1}/${total}) ${percent}% - ${fileName} → ${path.relative(rootOutputDir, output)}`);
+      console.log(`✔️ (${i + 1}/${total}) ${percent}% - ${fileName} → ${path.relative(rootOutputDir, output)} (${previewWidth}x${previewHeight}, 质量:${quality}%)`);
     } catch (err) {
       console.error(`❌ 转换失败: ${input}`, err);
     }

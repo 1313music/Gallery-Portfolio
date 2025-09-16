@@ -242,10 +242,10 @@ body.dark #exif-info {
 
 #loading {
   /* ... existing code ... */
-  background: var(--bg-card); /* Updated to match 0916 design */
+  background: transparent; /* 去掉背景色 */
   padding: 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 0; /* 去掉圆角 */
+  border: none;
 }
 
 /* 标签筛选样式 */

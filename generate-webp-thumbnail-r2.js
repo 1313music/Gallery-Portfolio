@@ -61,9 +61,32 @@ async function ensurePreviewExists(srcKey) {
   const obj = await s3.send(new GetObjectCommand({ Bucket: BUCKET, Key: srcKey }));
   const fileBuffer = await streamToBuffer(obj.Body);
 
+  // 获取原始图片尺寸
+  const metadata = await sharp(fileBuffer).metadata();
+  
+  // 计算预览图尺寸（限制最大宽度或高度为800像素，保持宽高比）
+  let previewWidth = metadata.width;
+  let previewHeight = metadata.height;
+  const maxDimension = 800;
+  
+  if (previewWidth > maxDimension || previewHeight > maxDimension) {
+    if (previewWidth > previewHeight) {
+      previewHeight = Math.round((previewHeight * maxDimension) / previewWidth);
+      previewWidth = maxDimension;
+    } else {
+      previewWidth = Math.round((previewWidth * maxDimension) / previewHeight);
+      previewHeight = maxDimension;
+    }
+  }
+
+  // 调整压缩质量，确保预览图比原图小
+  // 如果原始质量设置为100，则使用70；否则使用原始质量的75%
+  const adjustedQuality = QUALITY >= 100 ? 70 : Math.max(50, Math.round(QUALITY * 0.75));
+
   const previewBuffer = await sharp(fileBuffer)
     .rotate()
-    .webp({ quality: QUALITY })
+    .resize(previewWidth, previewHeight, { fit: 'inside', withoutEnlargement: true })
+    .webp({ quality: adjustedQuality })
     .toBuffer();
 
   await s3.send(
