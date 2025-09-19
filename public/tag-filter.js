@@ -35,6 +35,7 @@ class TagFilter {
         ).sort();
         
         // 添加其他标签
+        let coverButton = null;
         let firstCategoryButton = null;
         filteredCategories.forEach(category => {
             const tagButton = document.createElement('button');
@@ -46,7 +47,12 @@ class TagFilter {
             });
             fragment.appendChild(tagButton);
             
-            // 保存第一个分类按钮的引用
+            // 保存封面按钮的引用
+            if (category === '封面') {
+                coverButton = tagButton;
+            }
+            
+            // 保存第一个分类按钮的引用（作为备用）
             if (!firstCategoryButton) {
                 firstCategoryButton = tagButton;
             }
@@ -62,9 +68,16 @@ class TagFilter {
         });
         fragment.appendChild(allTag);
         
-        // 默认选中All按钮
-        this.selectTag(allTag, 'all');
-        this.currentTag = 'all';
+        // 默认选中封面标签
+        if (coverButton) {
+            this.selectTag(coverButton, '封面');
+        } else if (firstCategoryButton) {
+            // 如果没有封面标签，则选中第一个分类标签
+            this.selectTag(firstCategoryButton, firstCategoryButton.textContent);
+        } else {
+            // 如果没有其他标签，则选中All按钮
+            this.selectTag(allTag, 'all');
+        }
     
         // 一次性添加所有标签
         this.tagContainer.appendChild(fragment);
@@ -123,7 +136,7 @@ class TagFilter {
         
         const tagButtons = this.tagContainer.querySelectorAll('.tag');
         for (const button of tagButtons) {
-            if (button.textContent.toLowerCase() === tagValue.toLowerCase()) {
+            if (button.textContent === tagValue) {
                 this.selectTag(button, tagValue);
                 // 将选中的标签滚动到中间
                 const containerHeight = this.tagContainer.clientHeight;

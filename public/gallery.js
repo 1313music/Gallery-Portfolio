@@ -29,7 +29,18 @@ class Gallery {
         this.initComponents();
 
         // 处理 URL 参数（此时 tagFilter 已准备好）
-        this.handleUrlParams();
+        // 只有在URL中有标签参数时才调用handleUrlParams，避免重复设置默认标签
+        const path = window.location.pathname;
+        const tagFromUrl = path.substring(1); // 移除开头的斜杠
+        
+        if (tagFromUrl && tagFromUrl !== '') {
+            this.handleUrlParams();
+        } else {
+            // 确保默认标签是"封面"
+            if (this.tagFilter.getCurrentTag() !== '封面') {
+                this.tagFilter.selectTagByValue('封面');
+            }
+        }
 
         // 初始加载
         this.loadInitialImages();
@@ -45,14 +56,13 @@ class Gallery {
         this.tagFilter = new TagFilter((tag) => {
             this.imageLoader.filterImages(tag);
             this.updateUrlForTag(tag);
+            // 确保ImageLoader的currentTag与TagFilter的currentTag同步
+            this.imageLoader.currentTag = tag;
         });
 
         // 创建标签筛选器
         const categories = this.dataLoader.getCategories();
         this.tagFilter.createTagFilter(categories);
-        
-        // 将TagFilter的currentTag同步到ImageLoader
-        this.imageLoader.currentTag = this.tagFilter.getCurrentTag();
 
         // 设置模态窗口事件
         this.imageLoader.setupModalEvents();
@@ -71,52 +81,42 @@ class Gallery {
         const path = window.location.pathname;
         const tagFromUrl = path.substring(1); // 移除开头的斜杠
 
-        console.log('处理URL参数:', { path, tagFromUrl });
-
         if (tagFromUrl && tagFromUrl !== '') {
             const categories = this.dataLoader.getCategories();
-            console.log('可用标签:', categories);
 
             if (categories.includes(tagFromUrl)) {
-                console.log('找到匹配的标签:', tagFromUrl);
                 this.tagFilter.selectTagByValue(tagFromUrl);
                 this.imageLoader.filterImages(tagFromUrl);
             } else {
-                console.log('标签不存在:', tagFromUrl);
                 // 默认选择all标签
                 this.tagFilter.selectTagByValue('all');
                 this.imageLoader.filterImages('all');
             }
-        } else {
-            console.log('URL中没有标签参数，选择all标签');
-            this.tagFilter.selectTagByValue('all');
-            this.imageLoader.filterImages('all');
         }
+        // 移除else分支，当URL中没有标签参数时，不执行任何操作
+        // 这样可以保持initComponents()中设置的默认标签（封面）
     }
 
     // 更新URL
     updateUrlForTag(tag) {
-        console.log('更新URL为标签:', tag);
-
         if (tag === 'all') {
             if (window.location.pathname !== '/') {
-                console.log('移除URL中的标签参数');
                 window.history.pushState({}, '', '/');
             }
         } else {
             const newUrl = `/${tag}`;
             if (window.location.pathname !== newUrl) {
-                console.log('更新URL为:', newUrl);
                 window.history.pushState({}, '', newUrl);
             }
         }
     }
 
     loadInitialImages() {
-        // 如果currentTag已经设置（由TagFilter设置），则加载对应的图片
-        if (this.imageLoader.currentTag) {
-            this.imageLoader.filterImages(this.imageLoader.currentTag);
-        }
+        // 确保imageLoader的currentTag与tagFilter的currentTag同步
+        this.imageLoader.currentTag = this.tagFilter.getCurrentTag();
+        
+        // 加载对应的图片
+        this.imageLoader.filterImages(this.imageLoader.currentTag);
         this.imageLoader.updateColumns();
 
         setTimeout(() => {

@@ -675,8 +675,6 @@ class ImageLoader {
             img.removeEventListener("click", img.imgClickHandler);
         });
         this.loadingImages = [];
-        
-        console.log(`标签切换到: ${tag}, 已清空已加载图片缓存`);
 
         this.currentTag = tag;
         this.currentIndex = 0;
