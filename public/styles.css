@@ -4,6 +4,41 @@
   box-sizing: border-box;
 }
 
+/* SVG图标样式 */
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: -0.125em;
+  transition: all 0.3s ease;
+}
+
+/* 导航菜单中的图标 */
+.nav-item .svg-icon {
+  width: 28px;
+  height: 28px;
+  color: #d4af37;
+}
+
+/* 单独缩小关于图标 */
+.nav-item[title="关于我们"] .svg-icon {
+  width: 25px;
+  height: 25px;
+}
+
+/* 响应式设计 - 在小屏幕上适当缩小图标 */
+@media (max-width: 768px) {
+  .svg-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* 隐藏Font Awesome备用图标 */
+.fa {
+  display: none !important;
+}
+
 /* Layout styles */
 body {
   font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -45,25 +80,7 @@ header {
   position: relative;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 22px;
-  letter-spacing: -0.5px;
-  color: var(--primary);
-}
 
-.logo i {
-  color: var(--primary);
-  font-size: 28px;
-  transition: transform 0.5s ease;
-}
-
-.logo:hover i {
-  transform: rotate(15deg);
-}
 
 /* 导航菜单样式 */
 .nav-menu {
@@ -90,13 +107,12 @@ header {
   transform: scale(1.1);
 }
 
-.nav-item i {
-  font-size: 22px;
+.nav-item .svg-icon {
   color: #d4af37;
   transition: all 0.3s ease;
 }
 
-.nav-item:hover i {
+.nav-item:hover .svg-icon {
   color: var(--accent);
   transform: scale(1.1);
 }
@@ -252,16 +268,6 @@ footer a:hover {
 
 /* 移动端导航栏样式优化 */
 @media (max-width: 768px) {
-  /* 减小logo尺寸 */
-  .logo {
-    font-size: 20px;
-    gap: 8px;
-  }
-  
-  .logo i {
-    font-size: 24px;
-  }
-  
   /* 减小导航栏间距 */
   .nav-menu {
     gap: 10px;
@@ -302,7 +308,12 @@ footer a:hover {
 }
 
 .back-to-top i {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
+}
+
+.back-to-top .svg-icon {
+  width: 24px;
+  height: 24px;
 }
 
 /* 移动端适配 */
@@ -315,8 +326,13 @@ footer a:hover {
     }
     
     .back-to-top i {
-        font-size: 1rem;
-    }
+    font-size: 1rem;
+}
+
+.back-to-top .svg-icon {
+    width: 20px;
+    height: 20px;
+}
 }
 
 /* 浅色模式 */

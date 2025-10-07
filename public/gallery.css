@@ -12,7 +12,7 @@
   opacity: 0; /* Start hidden */
   transition: opacity 1s; /* Fade-in effect */
 }
-
+   
 /* Keyframes for image fly-in effect */
 @keyframes flyIn {
   0% {
