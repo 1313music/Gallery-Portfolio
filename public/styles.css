@@ -240,8 +240,9 @@ footer a:hover {
 /* 加载原图按钮样式 */
 .load-original-btn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: var(--primary);
   color: white;
   border: none;
@@ -262,12 +263,10 @@ footer a:hover {
 
 .load-original-btn:hover {
   background-color: var(--primary-dark);
-  transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .load-original-btn:active {
-  transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
