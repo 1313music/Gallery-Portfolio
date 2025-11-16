@@ -68,16 +68,7 @@ class TagFilter {
         });
         fragment.appendChild(allTag);
         
-        // 默认选中封面标签
-        if (coverButton) {
-            this.selectTag(coverButton, '封面');
-        } else if (firstCategoryButton) {
-            // 如果没有封面标签，则选中第一个分类标签
-            this.selectTag(firstCategoryButton, firstCategoryButton.textContent);
-        } else {
-            // 如果没有其他标签，则选中All按钮
-            this.selectTag(allTag, 'all');
-        }
+        // 注意：这里不再默认选中All标签，由Gallery类的init方法根据URL参数决定
     
         // 一次性添加所有标签
         this.tagContainer.appendChild(fragment);

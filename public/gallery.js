@@ -25,20 +25,21 @@ class Gallery {
         // 加载图片数据
         await this.dataLoader.loadGalleryData();
 
+        // 检查URL参数，决定是否默认选中All标签
+        const urlParams = new URLSearchParams(window.location.search);
+        const tagFromUrl = urlParams.get('tag');
+        
         // 初始化组件（包括 tagFilter）
         this.initComponents();
 
         // 处理 URL 参数（此时 tagFilter 已准备好）
-        // 只有在URL中有标签参数时才调用handleUrlParams，避免重复设置默认标签
-        const path = window.location.pathname;
-        const tagFromUrl = path.substring(1); // 移除开头的斜杠
-        
         if (tagFromUrl && tagFromUrl !== '') {
             this.handleUrlParams();
         } else {
-            // 确保默认标签是"封面"
-            if (this.tagFilter.getCurrentTag() !== '封面') {
-                this.tagFilter.selectTagByValue('封面');
+            // 确保默认标签是"all"
+            if (this.tagFilter.getCurrentTag() !== 'all') {
+                this.tagFilter.selectTagByValue('all');
+                this.imageLoader.filterImages('all');
             }
         }
 
@@ -78,8 +79,9 @@ class Gallery {
             return;
         }
 
-        const path = window.location.pathname;
-        const tagFromUrl = path.substring(1); // 移除开头的斜杠
+        // 使用URL参数模式：?tag=BB
+        const urlParams = new URLSearchParams(window.location.search);
+        const tagFromUrl = urlParams.get('tag');
 
         if (tagFromUrl && tagFromUrl !== '') {
             const categories = this.dataLoader.getCategories();
@@ -100,12 +102,15 @@ class Gallery {
     // 更新URL
     updateUrlForTag(tag) {
         if (tag === 'all') {
-            if (window.location.pathname !== '/') {
-                window.history.pushState({}, '', '/');
+            // 清除tag参数，回到首页
+            const newUrl = window.location.pathname;
+            if (window.location.search !== '') {
+                window.history.pushState({}, '', newUrl);
             }
         } else {
-            const newUrl = `/${tag}`;
-            if (window.location.pathname !== newUrl) {
+            // 使用查询参数模式
+            const newUrl = `${window.location.pathname}?tag=${encodeURIComponent(tag)}`;
+            if (window.location.search !== `?tag=${encodeURIComponent(tag)}`) {
                 window.history.pushState({}, '', newUrl);
             }
         }
