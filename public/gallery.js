@@ -36,11 +36,9 @@ class Gallery {
         if (tagFromUrl && tagFromUrl !== '') {
             this.handleUrlParams();
         } else {
-            // 确保默认标签是"all"
-            if (this.tagFilter.getCurrentTag() !== 'all') {
-                this.tagFilter.selectTagByValue('all');
-                this.imageLoader.filterImages('all');
-            }
+            // 默认选择all标签
+            this.tagFilter.selectTagByValue('all');
+            this.imageLoader.filterImages('all');
         }
 
         // 初始加载
@@ -61,22 +59,9 @@ class Gallery {
             this.imageLoader.currentTag = tag;
         });
 
-        // 创建标签筛选器 - 确保数据已加载
+        // 创建标签筛选器
         const categories = this.dataLoader.getCategories();
-        if (categories && categories.length > 0) {
-            this.tagFilter.createTagFilter(categories);
-        } else {
-            // 如果数据未加载，延迟创建标签筛选器
-            setTimeout(() => {
-                const retryCategories = this.dataLoader.getCategories();
-                if (retryCategories && retryCategories.length > 0) {
-                    this.tagFilter.createTagFilter(retryCategories);
-                } else {
-                    console.error('无法获取分类数据，使用默认分类');
-                    this.tagFilter.createTagFilter(['all']);
-                }
-            }, 100);
-        }
+        this.tagFilter.createTagFilter(categories);
 
         // 设置模态窗口事件
         this.imageLoader.setupModalEvents();
@@ -99,7 +84,7 @@ class Gallery {
         if (tagFromUrl && tagFromUrl !== '') {
             const categories = this.dataLoader.getCategories();
 
-            if (categories && categories.length > 0 && categories.includes(tagFromUrl)) {
+            if (categories.includes(tagFromUrl)) {
                 this.tagFilter.selectTagByValue(tagFromUrl);
                 this.imageLoader.filterImages(tagFromUrl);
             } else {
@@ -107,11 +92,9 @@ class Gallery {
                 this.tagFilter.selectTagByValue('all');
                 this.imageLoader.filterImages('all');
             }
-        } else {
-            // 当URL中没有标签参数时，默认选择all标签
-            this.tagFilter.selectTagByValue('all');
-            this.imageLoader.filterImages('all');
         }
+        // 移除else分支，当URL中没有标签参数时，不执行任何操作
+        // 这样可以保持initComponents()中设置的默认标签（封面）
     }
 
     // 更新URL
