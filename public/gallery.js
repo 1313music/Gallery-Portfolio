@@ -61,9 +61,22 @@ class Gallery {
             this.imageLoader.currentTag = tag;
         });
 
-        // 创建标签筛选器
+        // 创建标签筛选器 - 确保数据已加载
         const categories = this.dataLoader.getCategories();
-        this.tagFilter.createTagFilter(categories);
+        if (categories && categories.length > 0) {
+            this.tagFilter.createTagFilter(categories);
+        } else {
+            // 如果数据未加载，延迟创建标签筛选器
+            setTimeout(() => {
+                const retryCategories = this.dataLoader.getCategories();
+                if (retryCategories && retryCategories.length > 0) {
+                    this.tagFilter.createTagFilter(retryCategories);
+                } else {
+                    console.error('无法获取分类数据，使用默认分类');
+                    this.tagFilter.createTagFilter(['all']);
+                }
+            }, 100);
+        }
 
         // 设置模态窗口事件
         this.imageLoader.setupModalEvents();
@@ -86,7 +99,7 @@ class Gallery {
         if (tagFromUrl && tagFromUrl !== '') {
             const categories = this.dataLoader.getCategories();
 
-            if (categories.includes(tagFromUrl)) {
+            if (categories && categories.length > 0 && categories.includes(tagFromUrl)) {
                 this.tagFilter.selectTagByValue(tagFromUrl);
                 this.imageLoader.filterImages(tagFromUrl);
             } else {
