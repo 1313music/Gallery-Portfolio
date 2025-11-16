@@ -94,9 +94,11 @@ class Gallery {
                 this.tagFilter.selectTagByValue('all');
                 this.imageLoader.filterImages('all');
             }
+        } else {
+            // 当URL中没有标签参数时，默认选择all标签
+            this.tagFilter.selectTagByValue('all');
+            this.imageLoader.filterImages('all');
         }
-        // 移除else分支，当URL中没有标签参数时，不执行任何操作
-        // 这样可以保持initComponents()中设置的默认标签（封面）
     }
 
     // 更新URL
