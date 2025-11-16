@@ -127,7 +127,17 @@ class TagFilter {
         
         const tagButtons = this.tagContainer.querySelectorAll('.tag');
         for (const button of tagButtons) {
-            if (button.textContent === tagValue) {
+            // 处理 "all" 标签的特殊情况 - 按钮显示为 "All"，但内部值为 "all"
+            if (tagValue === 'all' && button.textContent === 'All') {
+                this.selectTag(button, 'all');
+                // 将选中的标签滚动到中间
+                const containerHeight = this.tagContainer.clientHeight;
+                const btnOffsetTop = button.offsetTop;
+                const btnHeight = button.clientHeight;
+                const scrollTarget = btnOffsetTop - (containerHeight / 2) + (btnHeight / 2);
+                this.tagContainer.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+                break;
+            } else if (button.textContent === tagValue) {
                 this.selectTag(button, tagValue);
                 // 将选中的标签滚动到中间
                 const containerHeight = this.tagContainer.clientHeight;
