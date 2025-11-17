@@ -483,6 +483,79 @@ body.modal-open .gallery .column > div.hover-active {
   transition: none !important;
 }
 
+/* 图片切换按钮样式 */
+.nav-image-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  transition: background-color 0.3s ease;
+}
+
+.nav-image-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev-btn {
+  left: 20px;
+}
+
+.next-btn {
+  right: 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .nav-image-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .prev-btn {
+    left: 10px;
+  }
+  
+  .next-btn {
+    right: 10px;
+  }
+}
+
+/* 加载原图按钮样式 */
+.load-original-btn {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.load-original-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 /* 改进悬停效果在模态关闭后的恢复 */
 body:not(.modal-open) .gallery .column > div:hover,
 body:not(.modal-open) .gallery .column > div.hover-active {
