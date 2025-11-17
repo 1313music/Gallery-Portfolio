@@ -785,6 +785,15 @@ class ImageLoader {
             loadOriginalBtn.style.display = 'flex';
         }
         
+        // 添加点击图片加载原图的事件
+        modalImg.onclick = (event) => {
+            event.stopPropagation();
+            // 只有当前显示的不是原图时才加载原图
+            if (!modalImg.src || !modalImg.src.includes(original)) {
+                this.loadOriginalImage();
+            }
+        };
+        
         // 获取EXIF信息
         this.getExifInfo(original).then(exifData => {
             // 检查模态窗口是否仍然打开
