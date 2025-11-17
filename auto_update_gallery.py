@@ -65,6 +65,10 @@ def update_gallery_index(category=None, auto_mode=False):
             filename = os.path.basename(file_path)
             name_without_ext = os.path.splitext(filename)[0]
             
+            # 排除特定文件
+            if filename == "web.okjike.com.jpeg":
+                continue
+            
             # 如果图片已经在JSON中，跳过
             if name_without_ext in existing_names:
                 continue
