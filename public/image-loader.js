@@ -305,8 +305,8 @@ class ImageLoader {
             
             const imageData = images[index];
             // 对URL进行编码，处理中文字符
-            const imageUrl = encodeURI(imageData.preview);
-            const originalUrl = encodeURI(imageData.original);
+            const imageUrl = imageData.preview;
+            const originalUrl = imageData.original;
             
             // 更严格的去重：检查缩略图和原图URL
             if (this.loadedImageUrls.has(imageUrl) || document.querySelector(`.gallery img[data-original="${originalUrl}"]`)) {
@@ -319,11 +319,12 @@ class ImageLoader {
             // 图片加载
             const img = new Image();
             // 启用原生懒加载与异步解码
-            //try { img.loading = 'lazy'; } catch (e) {}
-            //try { img.decoding = 'async'; } catch (e) {}
+            try { img.loading = 'lazy'; } catch (e) {}
+            try { img.decoding = 'async'; } catch (e) {}
             
             // 预览图缺失检测
             let previewFailed = false;
+            let originalFailed = false;
             
             img.onload = () => {
                 if (tag !== this.currentTag) {
@@ -387,8 +388,17 @@ class ImageLoader {
                     return;
                 }
                 
-                // 如果原图也加载失败，跳过这张图片
-                console.error(`原图也加载失败，跳过: ${originalUrl}`);
+                // 如果原图也加载失败，尝试URL编码
+                if (!originalFailed) {
+                    originalFailed = true;
+                    console.log(`尝试URL编码加载: ${originalUrl}`);
+                    const encodedOriginal = encodeURI(originalUrl);
+                    img.src = encodedOriginal;
+                    return;
+                }
+                
+                // 如果所有尝试都失败，跳过这张图片
+                console.error(`所有尝试都失败，跳过: ${originalUrl}`);
                 this.currentIndex++;
                 loadSingleImage(this.currentIndex);
             };
@@ -396,7 +406,6 @@ class ImageLoader {
             // 设置图片属性
             img.src = imageUrl;
             img.alt = imageData.name || 'Gallery Image';
-            img.dataset.original = originalUrl;
             img.dataset.preview = imageUrl;
             img.dataset.category = imageData.category || 'unknown';
             
@@ -997,13 +1006,42 @@ class ImageLoader {
 
         highResImage.onerror = () => {
             console.error('加载高清图失败:', this.currentOriginalUrl);
-            if (this.isModalOpen) {
+            
+            // 尝试使用URL编码重新加载
+            const encodedUrl = encodeURI(this.currentOriginalUrl);
+            const retryImage = new Image();
+            
+            retryImage.onload = () => {
+                if (!this.isModalOpen) return;
+                
+                console.log(`URL编码后加载成功: ${encodedUrl}`);
+                modalImg.src = encodedUrl;
                 modalImg.style.filter = 'none';
-                exifInfo.innerHTML = '<p style="color:var(--primary-color);">原图加载失败</p>';
-                        // 恢复按钮状态
-        loadOriginalBtn.innerHTML = '<span>加载原图</span>';
-        loadOriginalBtn.classList.remove('loading');
-            }
+                loadOriginalBtn.style.display = 'none';
+                
+                this.getExifInfo(encodedUrl).then(exifData => {
+                    if (!this.isModalOpen) return;
+                    exifInfo.innerHTML = this.createExifInfo(exifData);
+                }).catch(error => {
+                    if (this.isModalOpen) {
+                        console.error('获取EXIF信息失败:', error);
+                        exifInfo.innerHTML = '';
+                    }
+                });
+            };
+            
+            retryImage.onerror = () => {
+                if (this.isModalOpen) {
+                    console.error('URL编码后仍然加载失败:', encodedUrl);
+                    modalImg.style.filter = 'none';
+                    exifInfo.innerHTML = '<p style="color:var(--primary-color);">原图加载失败</p>';
+                    // 恢复按钮状态
+                    loadOriginalBtn.innerHTML = '<span>加载原图</span>';
+                    loadOriginalBtn.classList.remove('loading');
+                }
+            };
+            
+            retryImage.src = encodedUrl;
         };
 
         highResImage.src = this.currentOriginalUrl;
