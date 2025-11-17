@@ -1,0 +1,136 @@
+/* 统一SVG图标样式 */
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: -0.125em;
+  transition: all 0.3s ease;
+}
+
+/* 响应式设计 - 在小屏幕上适当缩小图标 */
+@media (max-width: 768px) {
+  .svg-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* 导航菜单中的图标 */
+.nav-item .svg-icon {
+  width: 28px;
+  height: 28px;
+  color: #d4af37;
+}
+
+/* 单独缩小音乐图标 */
+.nav-item[title="音乐"] .svg-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.nav-item:hover .svg-icon {
+  color: #ffd700;
+  transform: scale(1.1);
+}
+
+/* 播放控制区域SVG图标样式 */
+.player-controls .svg-icon {
+  width: 28px;
+  height: 28px;
+  color: #a0a8c0;
+}
+
+.play-pause-btn .svg-icon {
+  width: 32px;
+  height: 32px;
+  color: #a0a8c0;
+}
+
+.play-pause-btn:hover .svg-icon {
+  color: #d4af37;
+}
+
+.nav-btn:hover .svg-icon {
+  color: #d4af37;
+  transform: scale(1.1);
+}
+
+.control-btn:hover .svg-icon {
+  color: #d4af37;
+  transform: scale(1.1);
+}
+
+/* 歌曲列表标题图标 */
+.songs-header .svg-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  color: #d4af37;
+}
+
+/* 移动端歌曲列表图标 */
+.mobile-songs-list .songs-title .svg-icon {
+  width: 24px;
+  height: 24px;
+  color: #d4af37;
+}
+
+.mobile-songs-list .collapse-btn .svg-icon {
+  width: 24px;
+  height: 24px;
+  color: #a0a8c0;
+}
+
+.mobile-songs-list.collapsed .collapse-btn .svg-icon {
+  transform: rotate(180deg);
+}
+
+.mobile-songs-list .collapse-btn:hover .svg-icon {
+  color: #d4af37;
+}
+
+
+
+/* 回到顶部按钮图标 */
+.back-to-top .svg-icon {
+  width: 24px;
+  height: 24px;
+  color: #d4af37;
+}
+
+/* 留言板展开按钮图标 */
+.comments-toggle-btn .svg-icon {
+  width: 24px;
+  height: 24px;
+  color: #d4af37;
+}
+
+/* 视频分类按钮图标 */
+.category-btn .svg-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  color: #d4af37;
+}
+
+/* 视频播放和文件夹图标 */
+.play-icon .svg-icon,
+.folder-icon .svg-icon {
+  width: 24px;
+  height: 24px;
+  color: #d4af37;
+}
+
+/* 单独缩小关于图标 */
+.nav-item[title="关于"] .svg-icon {
+  width: 26px;
+  height: 26px;
+  /* 确保关于图标与音乐图标视觉大小一致 */
+  transform: scale(1.04);
+}
+
+/* 隐藏Font Awesome备用图标 */
+.fa {
+  display: none !important;
+}
+</content>

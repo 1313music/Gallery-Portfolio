@@ -303,8 +303,9 @@ class ImageLoader {
             }
             
             const imageData = images[index];
-            const imageUrl = imageData.preview;
-            const originalUrl = imageData.original;
+            // 对URL进行编码，处理中文字符
+            const imageUrl = encodeURI(imageData.preview);
+            const originalUrl = encodeURI(imageData.original);
             
             // 更严格的去重：检查缩略图和原图URL
             if (this.loadedImageUrls.has(imageUrl) || document.querySelector(`.gallery img[data-original="${originalUrl}"]`)) {
