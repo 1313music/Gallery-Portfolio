@@ -18,6 +18,7 @@ class ImageLoader {
         this.loadedImageUrls = new Set();
         this.currentHighResImage = null;
         this.isModalOpen = false;
+        this.currentImageIndex = 0; // 当前模态窗口中显示的图片索引
         
         this.init();
     }
@@ -711,6 +712,11 @@ class ImageLoader {
         modal.style.display = 'block';
         document.body.classList.add('no-scroll');
         
+        // 保存当前图片的索引，用于图片切换
+        const images = this.getCurrentImages();
+        this.currentImageIndex = images.findIndex(img => img.original === original);
+        console.log(`当前图片索引: ${this.currentImageIndex}`);
+        
         // 创建加载动画
         const createLoadingSpinner = () => {
             return `
@@ -834,12 +840,44 @@ class ImageLoader {
         }
     }
 
+    // 切换到上一张图片
+    showPrevImage() {
+        const images = this.getCurrentImages();
+        if (!this.isModalOpen || images.length === 0) return;
+        
+        // 计算上一张图片的索引
+        const prevIndex = this.currentImageIndex > 0 ? this.currentImageIndex - 1 : images.length - 1;
+        const prevImage = images[prevIndex];
+        
+        if (prevImage) {
+            this.currentImageIndex = prevIndex;
+            this.openModal(prevImage.original, prevImage.preview);
+        }
+    }
+    
+    // 切换到下一张图片
+    showNextImage() {
+        const images = this.getCurrentImages();
+        if (!this.isModalOpen || images.length === 0) return;
+        
+        // 计算下一张图片的索引
+        const nextIndex = (this.currentImageIndex + 1) % images.length;
+        const nextImage = images[nextIndex];
+        
+        if (nextImage) {
+            this.currentImageIndex = nextIndex;
+            this.openModal(nextImage.original, nextImage.preview);
+        }
+    }
+    
     // 设置模态窗口事件
     setupModalEvents() {
         const modal = document.getElementById('myModal');
         const span = document.getElementsByClassName('close')[0];
         const modalContent = document.querySelector('.modal-content');
         const loadOriginalBtn = document.getElementById('load-original-btn');
+        const prevBtn = document.getElementById('prev-image-btn');
+        const nextBtn = document.getElementById('next-image-btn');
 
         span.onclick = () => this.closeModal();
         modalContent.onclick = (event) => event.stopPropagation();
@@ -850,10 +888,26 @@ class ImageLoader {
             event.stopPropagation();
             this.loadOriginalImage();
         };
+        
+        // 上一张图片按钮事件
+        prevBtn.onclick = (event) => {
+            event.stopPropagation();
+            this.showPrevImage();
+        };
+        
+        // 下一张图片按钮事件
+        nextBtn.onclick = (event) => {
+            event.stopPropagation();
+            this.showNextImage();
+        };
 
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 this.closeModal();
+            } else if (event.key === 'ArrowLeft') {
+                this.showPrevImage();
+            } else if (event.key === 'ArrowRight') {
+                this.showNextImage();
             }
         });
     }
@@ -1004,6 +1058,9 @@ class ImageLoader {
         
         // 标记模态窗口已关闭
         this.isModalOpen = false;
+        
+        // 重置当前图片索引
+        this.currentImageIndex = 0;
         
         // 重置按钮状态
         loadOriginalBtn.innerHTML = '<span>加载原图</span>';
