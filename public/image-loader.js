@@ -323,7 +323,7 @@ class ImageLoader {
             //try { img.decoding = 'async'; } catch (e) {}
             
             // 预览图缺失检测
-            let previewFailed = false;
+            // 移除previewFailed变量，因为我们不再尝试加载原图
             
             img.onload = () => {
                 if (tag !== this.currentTag) {
@@ -379,16 +379,8 @@ class ImageLoader {
                 console.warn(`预览图加载失败: ${imageUrl}`);
                 this.loadingImages.splice(this.loadingImages.indexOf(img), 1);
                 
-                // 如果预览图加载失败，尝试加载原图
-                if (!previewFailed) {
-                    previewFailed = true;
-                    console.log(`尝试加载原图: ${originalUrl}`);
-                    img.src = originalUrl;
-                    return;
-                }
-                
-                // 如果原图也加载失败，跳过这张图片
-                console.error(`原图也加载失败，跳过: ${originalUrl}`);
+                // 如果预览图加载失败，跳过这张图片，不再尝试加载原图
+                console.error(`预览图加载失败，跳过: ${imageUrl}`);
                 this.currentIndex++;
                 loadSingleImage(this.currentIndex);
             };
