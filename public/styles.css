@@ -41,7 +41,7 @@
 
 /* Layout styles */
 body {
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "Source Han Sans CN", "Source Han Sans", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   background: linear-gradient(135deg, #0f1117 0%, #1a1d28 100%);
   color: var(--text-primary);
   min-height: 100vh;
@@ -250,7 +250,7 @@ footer a:hover {
   border-radius: 50%;
   cursor: pointer;
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -302,7 +302,7 @@ footer a:hover {
   border-radius: 25px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
   z-index: 1002;
@@ -570,4 +570,203 @@ body {
   border-top-color: #fff;
   animation: spin 1s linear infinite;
   margin-right: 10px;
+}
+
+/* 汉堡菜单样式 */
+.hamburger-menu {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.hamburger-icon {
+    position: relative;
+    width: 22px;
+    height: 16px;
+}
+
+.hamburger-icon span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #d4af37;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-icon span:nth-child(1) {
+    top: 0;
+}
+
+.hamburger-icon span:nth-child(2) {
+    top: 7px;
+}
+
+.hamburger-icon span:nth-child(3) {
+    top: 14px;
+}
+
+/* 汉堡菜单激活状态（变成X） */
+.hamburger-menu.active .hamburger-icon span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 7px;
+    background: #d4af37;
+}
+
+.hamburger-menu.active .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-icon span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 7px;
+    background: #d4af37;
+}
+
+/* 汉堡菜单导航内容 */
+.hamburger-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: rgba(15, 17, 23, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(212, 175, 55, 0.2);
+    z-index: 999;
+    transition: right 0.4s ease;
+    padding: 80px 20px 20px;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.hamburger-nav.active {
+    right: 0;
+}
+
+.hamburger-nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hamburger-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    color: #d4af37;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-nav-item:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: rgba(212, 175, 55, 0.4);
+    transform: translateX(5px);
+    color: #d4af37;
+}
+
+.hamburger-nav-item .svg-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* 大屏幕设备（宽度大于1400px）的汉堡菜单样式 */
+@media (min-width: 1400px) {
+    /* 汉堡按钮保持原样 */
+    
+    /* 横向菜单导航 - 居中显示并带有从右向左弹出效果 */
+    .hamburger-nav {
+        position: absolute;
+        top: 50%;
+        left: 100%; /* 初始位置在右侧屏幕外 */
+        right: auto;
+        width: auto;
+        height: auto;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+        transform: translateX(0) translateY(-50%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+    
+    .hamburger-nav.active {
+        left: 50%; /* 移动到居中位置 */
+        transform: translateX(-50%) translateY(-50%); /* 居中显示 */
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* 横向菜单内容布局 */
+    .hamburger-nav-content {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* 横向菜单项样式 - 重新设计 */
+    .hamburger-nav-item {
+        padding: 8px 16px;
+        font-size: 15px;
+        white-space: nowrap;
+        color: #d4af37;
+        background: rgba(15, 17, 23, 0.95);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        transform: none;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        box-sizing: border-box;
+    }
+    
+    .hamburger-nav-item:hover {
+        background: rgba(212, 175, 55, 0.25);
+        border-color: rgba(212, 175, 55, 0.6);
+        transform: translateY(-2px);
+        color: #d4af37;
+        box-shadow: 0 6px 25px rgba(212, 175, 55, 0.2);
+    }
+    
+    .hamburger-nav-item .svg-icon {
+        width: 18px;
+        height: 18px;
+    }
 }

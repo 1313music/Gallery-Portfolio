@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PH7 缩略图预览</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats {
+            background-color: #e9f7fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .thumbnail {
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+        }
+        .thumbnail img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .thumbnail .filename {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PH7 目录缩略图预览</h1>
+        
+        <div class="stats">
+            <p><strong>缩略图总数:</strong> <span id="total-count">145</span></p>
+            <p><strong>当前显示:</strong> <span id="current-count">0</span></p>
+            <p><strong>缩略图格式:</strong> WebP (优化大小)</p>
+            <p><strong>存储位置:</strong> R2 存储桶 (0_preview/PH7/)</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="showAll()">显示全部</button>
+            <button onclick="showPage(1)">第1页</button>
+            <button onclick="showPage(2)">第2页</button>
+            <button onclick="showPage(3)">第3页</button>
+            <button onclick="showPage(4)">第4页</button>
+            <button onclick="showPage(5)">第5页</button>
+        </div>
+
+        <div id="gallery" class="gallery">
+            <!-- 缩略图将通过JavaScript动态加载 -->
+        </div>
+
+        <div class="pagination">
+            <p>使用上方按钮切换不同页面的缩略图</p>
+        </div>
+    </div>
+
+    <script>
+        // R2存储桶的公共URL - 请替换为您的实际R2公共URL
+        const R2_BASE_URL = 'https://img.1701701.xyz/api';
+        const THUMBNAIL_PATH = '0_preview/PH7/';
+        
+        // 从本地PH7目录获取文件列表
+        const thumbnails = [
+            "Fg00KXz864Vwkm3K36v0HAKSNVSiv3.webp",
+            "Fg7wHZiLgj08Ul5N-AFMtBEdE7Azv3.webp",
+            "Fg99-iUgPTioGg_WhayCzECIOBjqv3.webp",
+            "FgEorDJV33uFRlk8G_X1XBYkCJyjv3.webp",
+            "FgaInUV5luVMF05Ah7HfE9JhH8r9v3.webp",
+            "Fgk41iJpdrIzEYXkquYK5QaX3abAv3.webp",
+            "FgrduX2p133Z_OGoqQE64yUILTs-v3.webp",
+            "FgyQAmc7J30ipABx2e9ciOTLfWZxv3.webp",
+            "FhFwqzLcAZMhtYiD6B-V-76E4nOIv3.webp",
+            "FhO8NPifKO4HggDGebE0dyBxg00lv3.webp",
+            "FhPSK4_FbVXzTDe1um16fhEL_rbYv3.webp",
+            "FhWA_qb_6JiskPwrT3NLcHZ-izj1v3.webp",
+            "FhexyOdYZOqtmUjaYju1mTIGlBYJv3.webp",
+            "Fhh4aD03LKMTPd_1WuuDMpUNhVqsv3.webp",
+            "Fi7r3Pq1dSCwFAxQJwWBlBLcObJhv3.webp",
+            "Fi8rndAnxiYrr7Z3mIvRe0YYv0Smv3.webp",
+            "FiCsx_8rMecBpd_B8LC_41BOkSTav3.webp",
+            "FiE6p4WDJ_iIwBLWaTn_dJ9lU72Xv3.webp",
+            "FiFZ2P7889BnSN1gJ4v9yXKvdIKvv3.webp",
+            "FiRp2l1bNWou6hQwgbT9GaiJ5zbTv3.webp",
+            "FiV_8qBKdZYcFZStDUXM-kEr4ahav3.webp",
+            "FiZCMdsm38KKy31-VwqUglsVdlAlv3.webp",
+            "FiZvmm8gfYoWPLbJAv_ZWHIlD0m1v3.webp",
+            "Fic8p78wbJmNhA7Ru6QOk8byPw4kv3.webp",
+            "Fimnd4KRRRxf4uEPMruPPPIR0IJkv3.webp",
+            "Fj1ZKndWBLArrCMgZyjW63Yyy2gRv3.webp",
+            "Fj7rZ8L8JbdXENDSocrZkJ-es2iyv3.webp",
+            "FjABaY6av6FWEQ94wCFWJX3-7HEFv3.webp",
+            "FjDosgoHYxqewVEzWjN4pYUwPgatv3.webp",
+            "FjPxSq3Q7yHsCkgUa_NSW1xIs88Mv3.webp",
+            "FjfyEEiwmc62VHJYv7waWqOR1FGBv3.webp",
+            "Fjx6kdd3lhmmRcaU7ViS96-IXw2rv3.webp",
+            "FkGFHm-4A_Ql8XcUme3vGrRr5V9fv3.webp",
+            "FkV-NnHjb7qmYNmnf_OGcTR-l56ev3.webp",
+            "FkW5WJIvBu_UnitWiF9XTTMskM-Fv3.webp",
+            "Fke8Ooh_jURl_y9u5AUxuuGr7_-8v3.webp",
+            "FkzMAOCkozgVC5RPMeK7xscsq4swv3.webp",
+            "FkznMyl2fuu3qiU5J_ebzLNir_6_v3.webp",
+            "FkzsLt3C5U7VxmPert3fWwrJVD7Ov3.webp",
+            "Fl3ejdVEoEJu0elglmwctIcVP_aAv3.webp",
+            "FlDek0CNJiLHhRgKoqgtKAe_3tc_v3.webp",
+            "FlLCkys0VQjAgGmqaPDPObcF3ta1v3.webp",
+            "FlbqocKP0teBgNJIZ7UZ1P0k4I64v3.webp",
+            "FlgUBVRyLyg3q9pNDN_72vjLD1AJv3.webp",
+            "FlgvTnc6z-x0U5euo-7VpjVmcRAYv3.webp",
+            "Flp7ZI9ScN1bUvZPipzuDA9OP_pTv3.webp",
+            "FlwuJt7Is2I67_htPBA2AXwCvHGkv3.webp",
+            "Fm0f6hLFVbBPIT9z2NiftCIAyqSfv3.webp",
+            "Fm3Yjr11kMvbbO74FYlHTAEDqVTsv3.webp",
+            "Fm5k11Z9fEK0pdURyhF1FsOGtWrXv3.webp",
+            "FmEyA_JvUARqW5eeIGnnsM3NbVCEv3.webp",
+            "FmHLduCeIKPQcu4jyo7wFrVwDk1Mv3.webp",
+            "FmJ0cn_W_LzqJV-yUP_0roxqFwlEv3.webp",
+            "FmJ8CkFrfhx6MZdvPdigmttU64ZAv3.webp",
+            "FmRW8X9gBkXLjRjik7OH5D3j8gWGv3.webp",
+            "Fmrd3bi2xi1KTOPsnoM3SIakF-9Lv3.webp",
+            "FmvTpKIMlAdSHqVsZkKPyiQW3OpTv3.webp",
+            "Fmvicu2sWw2TYZV1S1dwV3tZbV7cv3.webp",
+            "Fmx0ovFMAnIDGDyywB4qTfb-rD68v3.webp",
+            "Fn-tDa8PRYoTwT47HU9469rndI0Xv3.webp",
+            "Fn57OVe4PW-ctXu5uTUR_SKDa-vWv3.webp",
+            "FnEkqqvj4XGYWhXcltpHJ3YCDCChv3.webp",
+            "FnKP-WPGnuk311mWxxjGITVBm3rMv3.webp",
+            "FnMAvdoffrMelaOgd6Y5Y7QIh1sgv3.webp",
+            "FnNfFbS2PwIqlbLWXXJd9TF1igVXv3.webp",
+            "FnRRJmQKQwM9JV4paJJHIQ5WVeC-v3.webp",
+            "FnUWr0OUthnzwehVkv7se9phT7v6v3.webp",
+            "FnjsjA0pED2UpHr2WAIQXSpC5uWrv3.webp",
+            "FnkLSlzPlJY37hTiqOy3mAo2TF0Cv3.webp",
+            "FntI0nQsel5f9W7DwODpUZiM-_luv3.webp",
+            "Fo1UhJWq6ZvLwDC31J9ML4hilL8dv3.webp",
+            "Fo7B_Ao7_wnhzyfquMyIjkHYAZOXv3.webp",
+            "FoB6qwXLZz3W4iAfKmZfYbfpD4Qrv3.webp",
+            "FoJlk144rFlEl5CCSRevOFYt8PFXv3.webp",
+            "FoKkhFOck27F8fun5QbIWl5R1ruyv3.webp",
+            "FodUTosUbC4eo6rqsEJY_7lG5qJUv3.webp",
+            "Fodbf1knXKonr_AiBaF7eKVQX8n_v3.webp",
+            "FoeTv-zjpIvLdcX7X3VO1U4HudIZv3.webp",
+            "FowUab4dNO8whh8ObBQ5m5u5yBRrv3.webp",
+            "Fp7WcY4JLaT5R6M74dzRDrWmCWP2v3.webp",
+            "FpBiTtJ5CYs3jIyBC3g60MxDY2yev3.webp",
+            "FpIbzFWTNjHABX-BjwJZGXeVCQSHv3.webp",
+            "FpIiDn-j7ybjlJmOyljuqkTSk3Mdv3.webp",
+            "Fpis6-HAuZaOahDYdzHmoKr5nsN0v3.webp",
+            "FpwyF2QG6JdYOsr-saA8CNpiVdW5v3.webp",
+            "FqA3MQZ-K16oo2uBDkfWHSCmKL6Zv3.webp",
+            "FqTCkY5TbSSslfwL2R_EBrCEqyxcv3.webp",
+            "FqdxSmbc1176xPbh91_9KBufCVuwv3.webp",
+            "FqhZuoPqETwmrXDbKaGV6gKARsAgv3.webp",
+            "Fqm81CbUkkhttFfvyuJqGQCof4tXv3.webp",
+            "Fqsn3Qm8df21bO4TGVR95ZWHGTUkv3.webp",
+            "Fqzo23Y7Cz163-YaXJXNkps9e8z8v3.webp",
+            "Fr2Ko7lQVYTlHDH-wWXijuaanKhUv3.webp",
+            "Fr31dodM26fJHoob0mVgd971wFyfv3.webp",
+            "FrC4bor3sqaJpLN-2udPPpvG8Re-v3.webp",
+            "FrH53a5qcZl5uQsb-QSHP-H7YGTsv3.webp",
+            "FrsNugLVva7pXhTZHmYz0zFZdEj9v3.webp",
+            "FsHXbZmXweZhgQgZ6rh3uXVuk2uHv3.webp",
+            "FsRD2EaRkHCe4SDhblByYBd16o-9v3.webp",
+            "Fsn6jzXgoXRcUogGOBJ3jlLx4QLvv3.webp",
+            "FspbMpNng9j60O1S-k33waun3Yycv3.webp",
+            "FsxeWpZq1-VEUn5m8CMcpHskgdGav3.webp",
+            "Ft-1IM5MIKhDx7Xv95L_AeYNZe7zv3.webp",
+            "Ft4jn45001y2PH6YN3uXRdAFnxMtv3.webp",
+            "Ft6BK1CHwC-bPo2hcHUvF4KoNrWLv3.webp",
+            "FtEM48UqXV0sw5GNkaVgPg46DFwKv3.webp",
+            "FtM2mfoAa5kCNg2vsrNSptnEMRsmv3.webp",
+            "FtXZL3SmGQ2MepiAQNN1RKTmdc5zv3.webp",
+            "FtZyyDZ4dy6wovJoBENEYEcpTG-Xv3.webp",
+            "Ft_dL8wPRqNZvSKNATY-44DFHnzWv3.webp",
+            "Ftb1TcVJBJittTVRQKd_0lyKlxCPv3.webp",
+            "FtnOTULr8Rd1U1s4fTuQPFBKobSev3.webp",
+            "FtnlkOm1APLLSXdvJx1dNdxXIaWtv3.webp",
+            "Ftpm_O1SPzeBhIejIl6FbqDNia2Sv3.webp",
+            "FtuSZ81jLNoHY5169beIA9qUqpGnv3.webp",
+            "Fu-McOZ4xTDixFZ86JkHpZyLg0Wwv3.webp",
+            "Fu9FbhwMQfp0LZNs68jfbi4X50qbv3.webp",
+            "FuAwD4scKjWNJ4zgIWHmHJKdz_tbv3.webp",
+            "FuBjPXLdPBHEeOwbu-Qf9mer_O2vv3.webp",
+            "FuByHgGv9xAMaeJM1SFOZhFqDNEMv3.webp",
+            "FuIw9xqrP5Ca0c1_a8acNWROBy0_v3.webp",
+            "FuJ2z5xFsdVJYLkx06DykuwuO7g8v3.webp",
+            "FuM3mi5BVgheT3w6M-AdRF22vpMAv3.webp",
+            "FuOSOZiCnz2JRxnD7X1cd2JapXd4v3.webp",
+            "FuOr6P4jowU2kW6vuxJKqWVpWuzkv3.webp",
+            "FuXjHm1Z4-xRmAT_H31c2HF9Nawuv3.webp",
+            "FuYJPd-vniLzeDyK6IUPRUe9akuwv3.webp",
+            "Fur-vWIweLFyjhf7VRivoBChQHQ6v3.webp",
+            "Fuxgl1ZoR4ExLU6ZoyYByvGMfV0kv3.webp",
+            "FuxuWn5IXNgyB1r9zl1HwhpTBa_sv3.webp",
+            "Fv0W5C51YNQMnHeV7YjcwyXnwiGdv3.webp",
+            "Fv38RpBN4aY5zezSRTRMA9G9g5kiv3.webp",
+            "Fv8Vw46HhBx6eSn_MESoELJyzkXAv3.webp",
+            "FvCMrCTNr0zXak4aE6Oj9oWDhLWtv3.webp",
+            "FvDF2ouyUVAaU_EzkfZs4psEKyFxv3.webp",
+            "FvFZF2vF87cECqwf9xru2vDwNy6ev3.webp",
+            "FvWgRkNqVU9JM4sc5PITROW8pAnwv3.webp",
+            "FvXQkUgt29i6mT1afUj-OT8shVILv3.webp",
+            "FvYnI1wZPyDifb_RASJQy3jUFu80v3.webp",
+            "FvdO64d93z4OLzgKVTjkD_LuyEhCv3.webp",
+            "FvglA5QY1eFBri1YAFGWiTMAlITWv3.webp",
+            "FvkAgGneEdIDqv_okBxcltQwG4ePv3.webp",
+            "FvlQ5g-uCu_fMeaw3D64mgocW-Sev3.webp",
+            "FvvExvMaZOawGQV6zqqur-B7cLSSv3.webp",
+            "web.okjike.com_compressed.webp",
+        ];
+        
+        // 每页显示的缩略图数量
+        const THUMBNAILS_PER_PAGE = 30;
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage(1);
+        });
+        
+        // 显示所有缩略图
+        function showAll() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            
+            thumbnails.forEach(thumbnail => {
+                const thumbnailElement = createThumbnailElement(thumbnail);
+                gallery.appendChild(thumbnailElement);
+            });
+            
+            updateCurrentCount(thumbnails.length);
+        }
+        
+        // 显示指定页的缩略图
+        function showPage(pageNumber) {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            
+            const startIndex = (pageNumber - 1) * THUMBNAILS_PER_PAGE;
+            const endIndex = Math.min(startIndex + THUMBNAILS_PER_PAGE, thumbnails.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const thumbnailElement = createThumbnailElement(thumbnails[i]);
+                gallery.appendChild(thumbnailElement);
+            }
+            
+            updateCurrentCount(endIndex - startIndex);
+        }
+        
+        // 创建缩略图元素
+        function createThumbnailElement(thumbnail) {
+            const div = document.createElement('div');
+            div.className = 'thumbnail';
+            
+            const img = document.createElement('img');
+            img.src = `${R2_BASE_URL}/${THUMBNAIL_PATH}${thumbnail}`;
+            img.alt = thumbnail;
+            img.loading = 'lazy';
+            
+            const filename = document.createElement('div');
+            filename.className = 'filename';
+            filename.textContent = thumbnail;
+            
+            div.appendChild(img);
+            div.appendChild(filename);
+            
+            // 添加点击事件，查看原图
+            div.addEventListener('click', function() {
+                window.open(`${R2_BASE_URL}/${THUMBNAIL_PATH}${thumbnail}`, '_blank');
+            });
+            
+            return div;
+        }
+        
+        // 更新当前显示数量
+        function updateCurrentCount(count) {
+            document.getElementById('current-count').textContent = count;
+        }
+    </script>
+</body>
+</html>

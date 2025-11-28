@@ -62,20 +62,35 @@
           </svg>
         </a>
         
-        <!-- 导航菜单 -->
-        <div class="nav-menu" style="z-index: 8888;">
-          <a href="https://1701701.xyz/" class="nav-item" title="音乐">
-            <svg class="svg-icon"><use href="#icon-music"></use></svg>
-          </a>
-          <a href="https://1701701.xyz/video.html" class="nav-item" title="视频">
-            <svg class="svg-icon"><use href="#icon-video"></use></svg>
-          </a>
-          <a href="https://images.1701701.xyz/" class="nav-item" title="图库">
-            <svg class="svg-icon"><use href="#icon-images"></use></svg>
-          </a>
-          <a href="https://1701701.xyz/about.html" class="nav-item" title="关于">
-            <svg class="svg-icon"><use href="#icon-info"></use></svg>
-          </a>
+        <!-- 汉堡菜单按钮 -->
+        <div class="hamburger-menu" id="hamburger-menu">
+            <div class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- 汉堡菜单内容 -->
+        <div class="hamburger-nav" id="hamburger-nav">
+            <div class="hamburger-nav-content">
+                <a href="https://1701701.xyz/" class="hamburger-nav-item">
+                    <svg class="svg-icon"><use href="#icon-music"></use></svg>
+                    <span>音乐</span>
+                </a>
+                <a href="https://1701701.xyz/video.html" class="hamburger-nav-item">
+                    <svg class="svg-icon"><use href="#icon-video"></use></svg>
+                    <span>视频</span>
+                </a>
+                <a href="https://images.1701701.xyz/" class="hamburger-nav-item">
+                    <svg class="svg-icon"><use href="#icon-images"></use></svg>
+                    <span>图库</span>
+                </a>
+                <a href="https://1701701.xyz/about.html" class="hamburger-nav-item">
+                    <svg class="svg-icon"><use href="#icon-info"></use></svg>
+                    <span>关于</span>
+                </a>
+            </div>
         </div>
       </header>
       
@@ -106,6 +121,47 @@
     <button id="back-to-top" class="back-to-top" aria-label="回到顶部">
         <svg class="svg-icon"><use href="#icon-arrow-up"></use></svg>
     </button>
+    
+    <!-- 汉堡菜单交互脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 汉堡菜单交互
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const hamburgerNav = document.getElementById('hamburger-nav');
+            
+            // 点击汉堡菜单按钮
+            hamburgerMenu.addEventListener('click', function() {
+                // 切换激活状态
+                hamburgerMenu.classList.toggle('active');
+                hamburgerNav.classList.toggle('active');
+                
+                // 阻止事件冒泡
+                event.stopPropagation();
+            });
+            
+            // 点击菜单项时关闭菜单
+            const navItems = document.querySelectorAll('.hamburger-nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    hamburgerMenu.classList.remove('active');
+                    hamburgerNav.classList.remove('active');
+                });
+            });
+            
+            // 点击页面其他地方时关闭菜单
+            document.addEventListener('click', function(event) {
+                if (!hamburgerMenu.contains(event.target) && !hamburgerNav.contains(event.target)) {
+                    hamburgerMenu.classList.remove('active');
+                    hamburgerNav.classList.remove('active');
+                }
+            });
+            
+            // 阻止菜单内部的点击事件冒泡
+            hamburgerNav.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        });
+    </script>
     
     <!-- 加载JavaScript模块 -->
     <script src="public/auto-scroll.js"></script>

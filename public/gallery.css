@@ -103,7 +103,7 @@
 
 .exif-info strong {
   color: var(--primary-color);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* Dark theme for EXIF info */
@@ -159,7 +159,7 @@ body.dark .exif-info strong {
   right: 35px;
   color: var(--text-secondary);
   font-size: 40px;
-  font-weight: bold;
+  font-weight: 400;
   transition: 0.3s;
   z-index: 1002;
 }
@@ -171,7 +171,7 @@ body.dark .exif-info strong {
   transform: translateX(-50%);
   color: var(--text-secondary);
   font-size: 33px;
-  font-weight: bold;
+  font-weight: 400;
   transition: 0.3s;
   z-index: 1001;
 }
@@ -293,7 +293,7 @@ body.dark #exif-info {
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
-    font-weight: 500;
+    font-weight: 400;
     display: flex;
     align-items: center;
     justify-content: center;
