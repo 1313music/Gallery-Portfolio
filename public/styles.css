@@ -479,16 +479,16 @@ body.dark .load-original-btn:hover {
 
 /* 使用变量替换原有颜色值 */
 .load-more {
-    background-color: var(--primary-color);
+    background-color: var(--primary);
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
 }
 
 .gallery img {
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 4px 8px var(--shadow);
 }
 
 .tag-filter {
@@ -688,6 +688,12 @@ body {
     color: #d4af37;
 }
 
+.hamburger-nav-item.active {
+    background: rgba(212, 175, 55, 0.3);
+    border-color: var(--primary);
+    color: var(--accent);
+}
+
 .hamburger-nav-item .svg-icon {
     width: 20px;
     height: 20px;
@@ -763,6 +769,12 @@ body {
         transform: translateY(-2px);
         color: #d4af37;
         box-shadow: 0 6px 25px rgba(212, 175, 55, 0.2);
+    }
+    
+    .hamburger-nav-item.active {
+        background: rgba(212, 175, 55, 0.3);
+        border-color: var(--primary);
+        color: var(--accent);
     }
     
     .hamburger-nav-item .svg-icon {
